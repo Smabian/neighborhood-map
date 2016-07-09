@@ -12,7 +12,7 @@
 
     <div class="container">
       <div class="info-box">
-        <input id="searchInput" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH">
+        <input id="searchInput" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH...">
         <hr>
         <ul id="location-list" data-bind="foreach:locationList">
           <li class="location-item" data-bind="text: title"></li>
@@ -24,10 +24,10 @@
 
 
   <!-- SCRIPT LOADING -->
-    <script type='text/javascript' src='js/knockout-3.4.0.js'></script>
-    <script type='text/javascript' src="js/main.js"></script>
     <!--Load Google API async defer -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyD1kWP9z72geyt162dl4c4XxrhifLWcXMM&callback=initMap"></script>
+    <script type='text/javascript' src='js/knockout-3.4.0.js'></script>
+    <script type='text/javascript' src="js/main.js"></script>
   </body>
 </html>
 
