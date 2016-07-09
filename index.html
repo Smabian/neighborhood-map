@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Neighborhood Map</title>
+    <!-- Load CSS Stylesheet -->
+    <link rel="stylesheet" href="css/main.css">
+
+  </head>
+  <body>
+
+    <div class="container">
+      <!-- <div class="options-box">
+        <h1>Search your Neighborhood</h1>
+      </div> -->
+      <div id="map"></div>
+    </div>
+
+
+  <!-- SCRIPT LOADING -->
+    <script type='text/javascript' src='js/knockout-3.4.0.js'></script>
+    <script type='text/javascript' src="js/main.js"></script>
+    <!--Load Google API async defer -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyD1kWP9z72geyt162dl4c4XxrhifLWcXMM&callback=initMap"></script>
+  </body>
+</html>
+
