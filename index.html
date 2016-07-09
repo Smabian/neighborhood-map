@@ -15,7 +15,7 @@
         <input id="searchInput" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH...">
         <hr>
         <ul id="location-list" data-bind="foreach:locationList">
-          <li class="location-item" data-bind="text: title"></li>
+          <li class="location-item" data-bind="click: $parent.selectItem, text: title"></li>
         </ul>
         </div>
       </div>

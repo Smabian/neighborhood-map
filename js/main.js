@@ -7,7 +7,11 @@ var Locations = [
   {title: 'Train Station', location: {lat: 48.687601, lng: 9.0047014}}
 ]
 
-var Place = function(data){
+var map;
+var markers = [];
+
+var Place = function(data,id){
+  this.id = id;
   this.title = ko.observable(data.title);
   this.location = ko.observable(data.location);
 }
@@ -18,26 +22,30 @@ var ViewModel = function(){
   this.locationList = ko.observableArray([]);
   this.query = ko.observable('');
 
+  this.selectItem = function(){
+    google.maps.event.trigger(markers[this.id], 'click');
+  }
+
   // search function to update list
   self.search = function(value){
     // Clear List
     self.locationList.removeAll();
-    //clearMarkers(null);
     // run through locations and check if it matches the value entered in the search
     for(i=0;i<Locations.length;i++){
       if (Locations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
-        self.locationList.push(new Place(Locations[i]));
-       // setMarker(Locations[i]);
+        self.locationList.push(new Place(Locations[i],i));
+        //Check if markers are loaded (array not empty)
+        if (markers.length != 0 ){
+          markers[i].setVisible(true);
+        }
+      } else {
+        markers[i].setVisible(false);
       }
     }
   }
 }
-ko.applyBindings(new ViewModel());
 
 //Google Map handling
-var map;
-var markers = [];
-
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 48.682075, lng: 9.015431},
@@ -61,9 +69,7 @@ function initMap() {
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
     });
-    marker.addListener('click', function() {
-      Bounce(this);
-    });
+
     //Add Marker and scale map
     showListings();
   }
@@ -95,6 +101,7 @@ function populateInfoWindow(marker, infowindow) {
     infowindow.setContent('<div>' + marker.title + '</div>');
     // Open the infowindow on the correct marker.
     infowindow.open(map, marker);
+    Bounce(marker);
   }
 }
 
@@ -103,4 +110,4 @@ function Bounce(marker) {
     setTimeout(function(){ marker.setAnimation(null); }, 1400);
 }
 
-
+ko.applyBindings(new ViewModel());
