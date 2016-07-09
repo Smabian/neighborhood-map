@@ -11,9 +11,14 @@
   <body>
 
     <div class="container">
-      <!-- <div class="options-box">
-        <h1>Search your Neighborhood</h1>
-      </div> -->
+      <div class="info-box">
+        <input id="searchInput" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH">
+        <hr>
+        <ul id="location-list" data-bind="foreach:locationList">
+          <li class="location-item" data-bind="text: title"></li>
+        </ul>
+        </div>
+      </div>
       <div id="map"></div>
     </div>
 
