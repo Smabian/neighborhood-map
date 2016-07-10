@@ -65,3 +65,14 @@ hr {
   margin-bottom: 5px;
 }
 
+img{
+  height: 200px;
+  width: auto;
+}
+
+#copyright {
+  font-size: 8px;
+  color: grey;
+  text-align: right;
+}
+
