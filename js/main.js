@@ -46,7 +46,7 @@ var ViewModel = function(){
 
   this.locationList = ko.observableArray([]);
   this.query = ko.observable('');
-  this.hideInfoBox = ko.observable(false);
+  this.sidebarVisible = ko.observable(false);
 
   this.selectItem = function(){
     google.maps.event.trigger(markers[this.id], 'click');
@@ -71,12 +71,13 @@ var ViewModel = function(){
   }
 
   //show or hide sidebar
-  self.changeInfoBox = function(){
-    if (self.hideInfoBox() === true){
-      self.hideInfoBox(false);
+  self.hideSidebar = function(){
+    if (self.sidebarVisible() === true){
+      self.sidebarVisible(false);
     } else {
-      self.hideInfoBox(true);
+      self.sidebarVisible(true);
     }
+    console.log(self.sidebarVisible());
   }
 
   for (i=0;i<Locations.length;i++){
