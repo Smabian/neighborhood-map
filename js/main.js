@@ -46,6 +46,7 @@ var ViewModel = function(){
 
   this.locationList = ko.observableArray([]);
   this.query = ko.observable('');
+  this.hideInfoBox = ko.observable(false);
 
   this.selectItem = function(){
     google.maps.event.trigger(markers[this.id], 'click');
@@ -69,10 +70,18 @@ var ViewModel = function(){
     }
   }
 
+  //show or hide sidebar
+  self.changeInfoBox = function(){
+    if (self.hideInfoBox() === true){
+      self.hideInfoBox(false);
+    } else {
+      self.hideInfoBox(true);
+    }
+  }
+
   for (i=0;i<Locations.length;i++){
     Locations[i].fsqData = loadFourSquareData(Locations[i]);
   }
-  console.log(Locations);
 }
 
 //Google Map handling

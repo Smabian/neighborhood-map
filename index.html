@@ -3,23 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Neighborhood Map</title>
     <!-- Load CSS Stylesheet -->
     <link rel="stylesheet" href="css/main.css">
-
+    <script async src="https://use.fontawesome.com/2ae88afc00.js"></script>
   </head>
   <body>
 
     <div class="container">
-      <div class="info-box">
+      <div id="topBar">
+        <i class="fa fa-bars" data-bind="click: changeInfoBox" aria-hidden="true"></i>
+        <h1>Boeblingen</h1>
+      </div>
+      <div class="info-box" data-bind="css: { hiddenBox: hideInfoBox() == true }">
         <input id="searchInput" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH...">
         <hr>
         <ul id="location-list" data-bind="foreach:locationList">
           <li class="location-item" data-bind="click: $parent.selectItem, text: title"></li>
         </ul>
-        </div>
       </div>
-      <div id="map"></div>
+      <div id="map" class="mapSizeStd" data-bind="css: { mapSizeFull: hideInfoBox() == true }"></div>
     </div>
 
 
