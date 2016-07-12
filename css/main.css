@@ -7,10 +7,7 @@ body {
   font-size: 12px;
 }
 
-
-
 /*Top Bar*/
-
 #topBar {
   background: #fff;
   color: #525454;
@@ -36,26 +33,38 @@ h1 {
 }
 
 /*Map*/
-
 #map {
   width: 100%;
   height: 100%;
   position: absolute;
 }
 
+.infoArea {
+  text-align: center;
+}
+
+h2 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.smallText {
+  font-size:10px;
+}
+
 img{
   height: 200px;
   width: auto;
+  border: 3px solid #999;
 }
 
 #copyright {
-  font-size: 8px;
-  color: grey;
+  font-size: 10px;
+  color:  #999;
   text-align: right;
 }
 
 /*Sidebar*/
-
 #sideBar {
   background: #fff;
   text-align: left;

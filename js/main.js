@@ -1,3 +1,4 @@
+// Model (Locations)
 var Locations = [
   {
     title: 'O´Donovan`s Irish Pub',
@@ -32,6 +33,7 @@ var Locations = [
   }
 ]
 
+// Global Variables
 var map;
 var markers = [];
 
@@ -44,23 +46,24 @@ var Place = function(data,id){
 var ViewModel = function(){
   var self = this;
 
-  this.locationList = ko.observableArray([]);
-  this.query = ko.observable('');
-  this.sidebarVisible = ko.observable(false);
+  this.locationList = ko.observableArray([]); //Array of listentries
+  this.query = ko.observable(''); //Observable for search
+  this.sidebarVisible = ko.observable(false); //Sidebar Responsivness
 
+  //Data-Binding Functions
+  //Simulate click on Marker when selecting the matching list entry
   this.selectItem = function(){
     google.maps.event.trigger(markers[this.id], 'click');
   }
-
-  // search function to update list
+  //search function to update list
   self.search = function(value){
-    // Clear List
+    // Clear List of all locations, prior to adding the matching locations
     self.locationList.removeAll();
     // run through locations and check if it matches the value entered in the search
     for(i=0;i<Locations.length;i++){
       if (Locations[i].title.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
         self.locationList.push(new Place(Locations[i],i));
-        //Check if markers are loaded (array not empty)
+        //Check if markers are loaded to update the map together with search
         if (markers.length != 0 ){
           markers[i].setVisible(true);
         }
@@ -69,27 +72,28 @@ var ViewModel = function(){
       }
     }
   }
-
-  //show or hide sidebar
+  //Show/hide Sidebar when clicking burgermenu
   self.hideSidebar = function(){
     if (self.sidebarVisible() === true){
       self.sidebarVisible(false);
     } else {
       self.sidebarVisible(true);
     }
-    console.log(self.sidebarVisible());
   }
 
+  //Load data from Foursqare and add it to each object
   for (i=0;i<Locations.length;i++){
     Locations[i].fsqData = loadFourSquareData(Locations[i]);
   }
 }
+ko.applyBindings(new ViewModel());
 
 //Google Map handling
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 48.682075, lng: 9.015431},
           zoom: 15,
+          mapTypeControl: false,
         });
 
   var largeInfowindow = new google.maps.InfoWindow();
@@ -97,7 +101,6 @@ function initMap() {
   for (var i = 0; i < Locations.length; i++) {
     var position = Locations[i].location;
     var title = Locations[i].title;
-
     // Create a marker per location, and put into markers array.
     var marker = new google.maps.Marker({
       position: position,
@@ -106,12 +109,12 @@ function initMap() {
       id: i
     });
     markers.push(marker);
-    //Add Info Window
+    //Add Listener for Info Window
     marker.addListener('click', function() {
       populateInfoWindow(this, largeInfowindow);
     });
 
-    //Add Marker and scale map
+    //Add Marker to map and scale
     showListings();
   }
 }
@@ -133,22 +136,25 @@ function populateInfoWindow(marker, infowindow) {
     // Clear the infowindow content
     infowindow.setContent('');
     infowindow.marker = marker;
-    var temp = Locations[marker.id].fsqData;
+    var fsq = Locations[marker.id].fsqData;
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
     });
-    infowindow.setContent('<div>' + marker.title + '</div><div class="infoArea">' +
-      temp.Category + ' - Checkins: ' + temp.checkins + '</div><div>Click for next Image:</div><div>' +
-      '<img id="infoImage" src="' + temp.photos[0] + '" alt="no pictures available">' +
-      '<div id="copyright">©Information loaded from foursqare.com</div>');
+    //Define content of Infowindow
+    infowindow.setContent('<div class="infoArea"><h2>' + marker.title + '</h2>' +
+      '<div>Type: ' + fsq.Category + ' - Checkins: ' + fsq.checkins + '</div>' +
+      '<div class="smallText">Click for next Image:</div>' +
+      '<div><img id="infoImage" src="' + fsq.photos[0] + '" alt="no pictures available">' +
+      '<div id="copyright">©Information loaded from foursqare.com</div></div>');
     // Open the infowindow on the correct marker.
     infowindow.open(map, marker);
     // Let the marker bounce at the time the window is opened
     Bounce(marker);
 
+    //Add Eventlistener to go through images on click
     document.getElementById('infoImage').addEventListener("click", function (){
-      this.src = temp.photos[i >= temp.photos.length - 1 ? i = 0 : ++i];
+      this.src = fsq.photos[i >= fsq.photos.length - 1 ? i = 0 : ++i];
     }, false);
   }
 }
@@ -156,15 +162,17 @@ function populateInfoWindow(marker, infowindow) {
 //This function lets the marker bounce
 function Bounce(marker) {
     marker.setAnimation(google.maps.Animation.BOUNCE);
-    setTimeout(function(){ marker.setAnimation(null); }, 1400);
+    setTimeout(function(){ marker.setAnimation(null); }, 1400); //Limit to 2 Bounces
 }
-
-ko.applyBindings(new ViewModel());
 
 //______AJAX 3rd Party API - Foursquare_______
 function loadFourSquareData(Location) {
+  //Define variables needed for request
+  var fsqObj = {};
   var foursquareKey = "&client_id=KU0OL2V23W3SCCXOOR0NO4STQVOHPBAWJVRQEXCX2V521RKZ&client_secret=43YDKHQ2BN2JDAW50R1CABJC4W2KSKTP4UGF1QNGLBY54NVS";
   var limit = "&limit=1";
+  //Get todays date as key
+  var ll= "ll=" + Location.location.lat + "," + Location.location.lng;
   var date = function(){
     var today = new Date();
     //Get individual parts
@@ -173,7 +181,7 @@ function loadFourSquareData(Location) {
     var yyyy = today.getFullYear();
     //Fix formatting
     if(dd<10) {
-        dd='0'+dd
+      dd='0'+dd
     }
     if(mm<10) {
         mm='0'+mm
@@ -181,23 +189,25 @@ function loadFourSquareData(Location) {
     today = yyyy+''+mm+''+dd;
     return today;
   }();
-  var ll= "ll=" + Location.location.lat + "," + Location.location.lng;
+
   var SearchUrl = "https://api.foursquare.com/v2/venues/search?" + ll + limit + foursquareKey + "&v=" + date;
-
-  var fsqObj = {};
-
+  //First Request for basic Info
   $.ajax(SearchUrl, {
     dataType : "jsonp",
+    timeout: 5000,
     success : function(data){
       fsqObj.checkins = data.response.venues[0].stats.checkinsCount;
       fsqObj.herenow = data.response.venues[0].hereNow.summary;
       fsqObj.Category = data.response.venues[0].categories[0].name;
 
+      //Define variables needed for second request
       var searchVenue = data.response.venues[0];
-      var photoURL = "https://api.foursquare.com/v2/venues/" + searchVenue.id + "/photos?" + foursquareKey + "&v=" + date
 
+      var photoURL = "https://api.foursquare.com/v2/venues/" + searchVenue.id + "/photos?" + foursquareKey + "&v=" + date
+      //Second Request for photos
       $.ajax(photoURL, {
         dataType : "jsonp",
+        timeout: 5000,
         success : function(photoData){
           var Temp = photoData.response.photos.items;
           fsqObj.photos = [];
@@ -205,10 +215,14 @@ function loadFourSquareData(Location) {
             fsqObj.photos[i] = Temp[i].prefix + "width300" + Temp[i].suffix;
           }
           if(Temp.length === 0) {
-            fsqObj.photos[0] = "No picture available";
+            fsqObj.photos[0] = "img/NoImage.png";
           }
+        }, error : function(xhr, textStatus, errorThrown){
+           alert('Foresquare request failed - Infowindows not available');
         }
       });
+    }, error : function(xhr, textStatus, errorThrown){
+      alert('Foresquare request failed - Infowindows not available');
     }
   })
   return fsqObj;
