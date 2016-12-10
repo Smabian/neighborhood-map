@@ -145,7 +145,7 @@ function populateInfoWindow(marker, infowindow) {
     //Set Amount of Pictures (max 3)
     var pictureString = "";
     for (j=0;j<3;j++){
-      if(j<=fsq.photos.length){
+      if(j<fsq.photos.length){
         pictureString = pictureString + '<img id="infoImage" src="' + fsq.photos[j] + '"">';
       }
     }
@@ -229,7 +229,9 @@ function loadFourSquareData(Location) {
   return fsqObj;
 }
 
-
+function errorHandling() {
+  alert("Google Maps has failed to load. Please check your internet connection and try again.");
+}
 
 
 
