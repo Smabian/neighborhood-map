@@ -5,16 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Neighborhood Map</title>
-<!-- Load CSS Stylesheet -->
+    <!-- Load CSS Stylesheet -->
     <link rel="stylesheet" href="css/main.css">
   </head>
   <body>
-<!-- Top Bar -->
-    <div id="top-bar">
+    <!-- Top Bar -->
+    <header>
       <i class="fa fa-bars" data-bind="click: hideSidebar" aria-hidden="true"></i>
       <h1>Böblingen</h1>
-    </div>
-<!-- Side Bar -->
+    </header>
+    <!-- Side Bar -->
     <div id="sideBar" data-bind="css: { sidebarHide: sidebarVisible() == true }">
       <input id="search" data-bind="textInput: query, event: {keyup: search(query())}" type="text" placeholder="SEARCH...">
       <hr>
@@ -22,9 +22,9 @@
         <li class="location-item" data-bind="click: $parent.selectItem, text: title"></li>
       </ul>
     </div>
-<!-- Map -->
+    <!-- Map -->
     <div id="map"></div>
-<!-- Load Scripts -->
+    <!-- Load Scripts -->
     <script async src="https://use.fontawesome.com/2ae88afc00.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries&key=AIzaSyD1kWP9z72geyt162dl4c4XxrhifLWcXMM&callback=initMap"></script>
     <script src='js/knockout-3.4.0.js'></script>
