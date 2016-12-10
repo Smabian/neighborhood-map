@@ -8,7 +8,7 @@ body {
 }
 
 /*Top Bar*/
-#topBar {
+#top-bar {
   background: #fff;
   color: #525454;
   width:100%;
@@ -52,7 +52,7 @@ h2 {
   font-size:10px;
 }
 
-img{
+img {
   height: 200px;
   width: auto;
   border: 3px solid #999;
